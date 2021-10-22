@@ -56,16 +56,16 @@ if __name__ == '__main__':
     T = 273.15*u.K
     h = 30000.*u.m
 
-    print " ** Air density at P =",P," and T=",T," is",AirDensity(P,T).si
-    print
+    print(" ** Air density at P =",P," and T=",T," is",AirDensity(P,T).si)
+    print()
     Ptmp = AltitudePressure(h).si
     Ttmp = AltitudeTemperature(h)
-    print " ** Air physical parameters at h=",h
-    print "      - Pressure    :",Ptmp," or ",Ptmp.to(u.hPa)
-    print "      - Temperature :",Ttmp
-    print "      - Density     :",AirDensity(Ptmp,Ttmp).to(u.g/(u.cm)**3)," Karl:",AirDensityFromKK(h).to(u.g/(u.cm)**3)
-    print "      - Mol. density:",AirAtomDensity(h).si
-    print "           - N2     :",N2_Air*AirAtomDensity(h).si
+    print(" ** Air physical parameters at h=",h)
+    print("      - Pressure    :",Ptmp," or ",Ptmp.to(u.hPa))
+    print("      - Temperature :",Ttmp)
+    print("      - Density     :",AirDensity(Ptmp,Ttmp).to(u.g/(u.cm)**3)," Karl:",AirDensityFromKK(h).to(u.g/(u.cm)**3))
+    print("      - Mol. density:",AirAtomDensity(h).si)
+    print("           - N2     :",N2_Air*AirAtomDensity(h).si)
     altitude=np.linspace(0.,100.,100)
     altitude = altitude*u.km
     

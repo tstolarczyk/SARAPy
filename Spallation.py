@@ -55,8 +55,8 @@ def NeutronFlux(Energy, height,S=0.5,latitude=40.0*u.degree):
 def NeutronFluxDisplay(Energy,latitude=40.0*u.degree):        
 
     hpressure = np.logspace(-7,3,50)*u.hPa
-    print hpressure
-    print NeutronFlux(Energy, hpressure)
+    print(hpressure)
+    print(NeutronFlux(Energy, hpressure))
     fig=plt.figure(figsize=(8,4))
     a = fig.add_subplot(1,1,1)    
     a.set_xscale('log')
@@ -93,7 +93,7 @@ if __name__=="__main__":
 ### Example of a neutron flux    
     E=1*u.MeV
     h = 25*u.hPa
-    print "Neutron flux at E=",E," and h=",h," = ",NeutronFlux(E,h,S=0,latitude=62*u.degree) 
+    print("Neutron flux at E=",E," and h=",h," = ",NeutronFlux(E,h,S=0,latitude=62*u.degree) )
 
 #    E=np.logspace(-2.,3.,100)
     E=np.linspace(0.1,20.,100)
@@ -130,19 +130,19 @@ if __name__=="__main__":
 
 
 # Integrate neutron flux over energies and plot versus altitude
-    print "========================="
+    print("=========================")
     EnMin = 0.01*u.MeV
     EnMax = 1000.*u.MeV
-    print "Energy range = ", EnMin, EnMax
+    print("Energy range = ", EnMin, EnMax)
   # Altitude - given by the photn flux calculation (below hmin, effect of the Earth neutron albedo
     hMax = 1000*u.hPa
     hMin = 10*u.hPa
-    print "Altitude range = ", hMin, hMax
+    print("Altitude range = ", hMin, hMax)
 # Integrate the neutron flux with energy 
     h0 = hMin
     flux_E = lambda Ex:NeutronFlux(Ex*u.MeV,h0,latitude=62*u.degree,S=0.8).value
     flux = scipy.integrate.quad(flux_E,EnMin.value,EnMax.value,epsrel=0.1)*(NeutronFlux(EnMin,hMin).unit*u.MeV)   # By default it will go to Joule 
-    print " - Neutron flux at h={0:8} : {1:.2e} +- {2:.2e} {3}".format(h0,flux[0].value,flux.value[1],flux.unit)    
+    print(" - Neutron flux at h={0:8} : {1:.2e} +- {2:.2e} {3}".format(h0,flux[0].value,flux.value[1],flux.unit)    )
        
     
     

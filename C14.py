@@ -66,17 +66,17 @@ class SNR:
         return self.norm*(E*u.GeV)**-self.gamma
         
     def __str__(self): # Return a string
-        print "------------ SNR -----------------"
-        print "Distance                        : ",self.dist   
-        print "Total kinetic energy            : ",self.ESN
-        print "  - Fraction to CR              : ",self.EpsCR  
-        print "  - CR fraction to gamma        : ",self.EpsGam  
-        print "  - Total energy to gamma       : ",self.EpsCR*self.EpsGam*self.ESN
-        print
-        print "Energy boundaries               : ",self.Emin,", ",self.Emax
-        print "Spectral index                  : ",self.gamma
-        print "  ->Corresponding normalisation : ",self.norm
-        return "--------------------------------"
+        print("------------ SNR -----------------")
+        print("Distance                        : ",self.dist)   
+        print("Total kinetic energy            : ",self.ESN)
+        print("  - Fraction to CR              : ",self.EpsCR)  
+        print("  - CR fraction to gamma        : ",self.EpsGam)  
+        print("  - Total energy to gamma       : ",self.EpsCR*self.EpsGam*self.ESN)
+        print()
+        print("Energy boundaries               : ",self.Emin,", ",self.Emax)
+        print("Spectral index                  : ",self.gamma)
+        print("  ->Corresponding normalisation : ",self.norm)
+        return ("--------------------------------")
             
 ###############################################################################
 # RC spectrum
@@ -92,11 +92,11 @@ class RC:
         return self.norm*(E**-self.gamma)/u.cm/u.cm/u.s/u.GeV
     
     def __str__(self): # Return a string
-        print "------------ CR -----------------"
-        print "Energy boundaries               : ",self.Emin,", ",self.Emax
-        print "Spectral index                  : ",self.gamma
-        print "Normalisation                   : ",self.norm
-        return "--------------------------------"
+        print("------------ CR -----------------")
+        print("Energy boundaries               : ",self.Emin,", ",self.Emax)
+        print("Spectral index                  : ",self.gamma)
+        print("Normalisation                   : ",self.norm)
+        return ("--------------------------------")
         
 ###############################################################################
 # PLot incoming spectra
@@ -182,38 +182,38 @@ if __name__=="__main__":
     h0 = 25900*u.m
     E0 = 10*u.MeV
         
-    print "======================================="
-    print "14C production rate at :"
-    print "  h= ",h0," (",atm.AltitudePressure(h0),")"
-    print "  E0=",E0
-    print "    Air density  = ",atm.N2_Air*atm.AirAtomDensity(h0).to(1/(u.cm)**3)
-    print "    14C cross s. = ",CrossSection_14C(E0)," or ",CrossSection_14C(E0).si
-    print "    n flux       = ",nspal.NeutronFlux(E0,atm.AltitudePressure(h0),S=0.,latitude=62.0*u.degree)
-    print "         --->",dn14dEdh(E0,h0)
-    print "======================================="    
+    print("=======================================")
+    print("14C production rate at :")
+    print("  h= ",h0," (",atm.AltitudePressure(h0),")")
+    print("  E0=",E0)
+    print("    Air density  = ",atm.N2_Air*atm.AirAtomDensity(h0).to(1/(u.cm)**3))
+    print("    14C cross s. = ",CrossSection_14C(E0)," or ",CrossSection_14C(E0).si)
+    print("    n flux       = ",nspal.NeutronFlux(E0,atm.AltitudePressure(h0),S=0.,latitude=62.0*u.degree))
+    print("         --->",dn14dEdh(E0,h0))
+    print("=======================================")    
     
    
 # Integrate the 14C production with energy - use the integrant has a function - precise but can be very long
     dn14dhdE_E = lambda Ex:dn14dEdh(Ex*u.MeV,h0).value
     dn14dh = scipy.integrate.quad(dn14dhdE_E,EnMin.value,EnMax.value,epsrel=0.1)*(dn14dEdh(E0,h0).unit*u.MeV)   # By default it will go to Joule 
-    print " - 14C production rate at h={0:8} : {1:.2e} +- {2:.2e} {3}".format(h0,dn14dh[0].value,dn14dh.value[1],dn14dh.unit)    
+    print(" - 14C production rate at h={0:8} : {1:.2e} +- {2:.2e} {3}".format(h0,dn14dh[0].value,dn14dh.value[1],dn14dh.unit))    
     
     # Alternative method from data points
     En = np.linspace(EnMin,EnMax,500) # Result identical if one goes to 200 to 1000, unsufficient if 120 bins
 #    print "dn14dEdh =",dn14dEdh(En,h0) 
     dn14dh_1 = scipy.integrate.simps(dn14dEdh(En,h0),x=En)*(dn14dEdh(E0,h0).unit*u.MeV) # By default it will go to Joule   
-    print "                    Check h={0:8} : {1:.2e}".format(h0,dn14dh_1)
+    print("                    Check h={0:8} : {1:.2e}".format(h0,dn14dh_1))
 #      
 # Integrate the 14C production with altitude - - use the integrant has a function - precise but can be very long
     dn14dhdE_h = lambda hx:dn14dEdh(E0,hx*u.m).value
     dn14dE = scipy.integrate.quad(dn14dhdE_h,hMin.value,hMax.value,epsrel=0.1)*(dn14dEdh(E0,h0).unit*u.cm)
-    print " - 14C production rate at E={0:6} : {1:.2e} +- {2:.2e} {3}".format(E0,dn14dE[0].value,dn14dE[1].value,dn14dE.unit)     
+    print(" - 14C production rate at E={0:6} : {1:.2e} +- {2:.2e} {3}".format(E0,dn14dE[0].value,dn14dE[1].value,dn14dE.unit))     
 
    # Alternative method 
     h = np.linspace(hMin,hMax,10)
 #    print "h=",h," - dn14dEdh =",dn14dEdh(E0,h)     
     dn14dE_1 = scipy.integrate.simps(dn14dEdh(E0,h),x=h)*(dn14dEdh(E0,h0).unit*u.cm)
-    print "                    Check E={0:6} : {1:.2e}".format(E0,dn14dE_1)    
+    print("                    Check E={0:6} : {1:.2e}".format(E0,dn14dE_1))    
 #
 # Plot 14C prodcution rate at all altitude versus energies - cannot be done with "quad": would be too long       
     fig = plt.figure(figsize=(8,4))
@@ -227,7 +227,7 @@ if __name__=="__main__":
 # Wikipedia says the 14C production rate on Earth is around 22000 / m2/s   
     dn14dEdh_Eh = lambda x,y:dn14dEdh(x*u.MeV,y*u.m).value
     dn14 = scipy.integrate.dblquad(dn14dEdh_Eh,hMin.value,hMax.value,lambda x:EnMin.value,lambda x:EnMax.value,epsrel=0.1)*(dn14dEdh(E0,h0).unit*u.cm*u.MeV)
-    print "Total 14C production rate in the atmosphere : {0:.2e} +- {1:.2e} {2}".format(dn14[0].value,dn14[1].value,dn14.unit)    
+    print("Total 14C production rate in the atmosphere : {0:.2e} +- {1:.2e} {2}".format(dn14[0].value,dn14[1].value,dn14.unit)    )
             
 # Plot 14C production rate at a given altitude for all valid energy
 #    fig=plt.figure(figsize=(12,8)) 
